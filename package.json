@@ -1,8 +1,9 @@
 {
-    "name": "blocko",
-    "version": "1.0.0",
+    "name": "blockr",
+    "version": "1.0.2",
     "main": "index.js",
     "license": "MIT",
+    "bin": "index.js",
     "scripts": {
         "lint": "eslint ."
     },

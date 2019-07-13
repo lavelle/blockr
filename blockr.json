@@ -1,0 +1,7 @@
+{
+    "hosts": {
+        "wsj": "wsj.com",
+        "hackernews": "news.ycombinator.com",
+        "reddit": "reddit.com"
+    }
+}

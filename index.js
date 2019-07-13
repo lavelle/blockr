@@ -1,5 +1,6 @@
 #! /usr/bin/env node
 const fs = require('fs');
+const os = require('os');
 const path = require('path');
 const _ = require('lodash');
 const meow = require('meow');
@@ -7,12 +8,13 @@ const meow = require('meow');
 const cli = meow(
     `
 	Usage
-      $ blocko
-      $ blocko unblock
-      $ blocko unblock <site>
+      $ blockr
+      $ blockr unblock
+      $ blockr unblock <site>
 
 	Options
-	  --hosts-file, -h  Path to the hosts file
+      --hosts-file,  -h   Path to the hosts file
+      --config-file, -c   Path to the config file
 `,
     {
         flags: {
@@ -21,12 +23,17 @@ const cli = meow(
                 alias: 'h',
                 default: '/etc/hosts',
             },
+            'config-file': {
+                type: 'string',
+                alias: 'c',
+                default: path.join(os.homedir(), 'blockr.json'),
+            },
         },
     },
 );
 
-const BEGIN_MARKER = '# BEGIN BLOCKO';
-const END_MARKER = '# END BLOCKO';
+const BEGIN_MARKER = '# BEGIN BLOCKR';
+const END_MARKER = '# END BLOCKR';
 
 const makeEntry = host => `0.0.0.0 ${host}\n::      ${host}\n`;
 
@@ -76,8 +83,21 @@ function updateBlock(hosts) {
 
     tryWrite(newHosts);
 }
+
+function loadConfig() {
+    try {
+        return JSON.parse(fs.readFileSync(cli.flags.configFile, 'utf-8'));
+    } catch (error) {
+        console.error(`No config file found at ${cli.flags.configFile}`);
+        process.exit(1);
+    }
+
+    return null;
+}
+
 const command = cli.input[0];
-const config = JSON.parse(fs.readFileSync(path.join(__dirname, 'blocko.json'), 'utf-8'));
+
+const config = loadConfig();
 
 if (!command || command === 'block') {
     updateBlock(config.hosts);

@@ -1,10 +1,21 @@
 {
-  "name": "blocko",
-  "version": "1.0.0",
-  "main": "index.js",
-  "license": "MIT",
-  "dependencies": {
-    "lodash": "^4.17.14",
-    "meow": "^5.0.0"
-  }
+    "name": "blocko",
+    "version": "1.0.0",
+    "main": "index.js",
+    "license": "MIT",
+    "scripts": {
+        "lint": "eslint ."
+    },
+    "dependencies": {
+        "lodash": "^4.17.14",
+        "meow": "^5.0.0"
+    },
+    "devDependencies": {
+        "eslint": "^6.0.1",
+        "eslint-config-airbnb": "^17.1.1",
+        "eslint-config-prettier": "^6.0.0",
+        "eslint-plugin-import": "^2.18.0",
+        "eslint-plugin-jsx-a11y": "^6.2.3",
+        "eslint-plugin-react": "^7.14.2"
+    }
 }

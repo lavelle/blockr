@@ -1,6 +1,5 @@
 const fs = require('fs');
 const path = require('path');
-const _ = require('lodash');
 const meow = require('meow');
 
 const cli = meow(

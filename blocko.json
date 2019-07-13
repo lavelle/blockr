@@ -1,0 +1,32 @@
+{
+    "hosts": [
+        "wsj.com",
+        "news.ycombinator.com",
+        "reddit.com",
+        "xkcd.com",
+        "bbc.com",
+        "bbc.co.uk",
+        "news.google.com",
+        "theguardian.com",
+        "twitter.com",
+        "imgur.com",
+        "instagram.com",
+        "wired.com",
+        "theverge.com",
+        "youtube.com",
+        "genius.com",
+        "buzzfeed.com",
+        "facebook.com",
+        "vox.com",
+        "medium.com",
+        "hckrnews.com",
+        "outline.com",
+        "theatlantic.com",
+        "telegraph.co.uk",
+        "linkedin.com",
+        "forbes.com",
+        "minimal.news",
+        "techcrunch.com",
+        "businessinsider.com"
+    ]
+}

@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const _ = require('lodash');
 const meow = require('meow');
 
 const cli = meow(
@@ -7,6 +8,7 @@ const cli = meow(
 	Usage
       $ blocko
       $ blocko unblock
+      $ blocko unblock <site>
 
 	Options
 	  --hosts-file, -h  Path to the hosts file
@@ -40,8 +42,6 @@ function generateBlockString(hosts) {
     return str;
 }
 
-const config = JSON.parse(fs.readFileSync(path.join(__dirname, 'blocko.json'), 'utf-8'));
-
 function tryWrite(hosts) {
     try {
         fs.writeFileSync(cli.flags.hostsFile, hosts);
@@ -53,12 +53,12 @@ function tryWrite(hosts) {
     }
 }
 
-function addBlock() {
+function updateBlock(hosts) {
     if (!fs.existsSync(cli.flags.hostsFile)) {
         fs.closeSync(fs.openSync(cli.flags.hostsFile, 'w'));
     }
     const currentHosts = fs.readFileSync(cli.flags.hostsFile, 'utf-8');
-    const blockString = generateBlockString(config.hosts);
+    const blockString = generateBlockString(_.values(hosts));
 
     const startLocation = currentHosts.indexOf(BEGIN_MARKER);
     const endLocation = currentHosts.indexOf(END_MARKER);
@@ -75,27 +75,17 @@ function addBlock() {
 
     tryWrite(newHosts);
 }
-
-function removeBlock() {
-    const currentHosts = fs.readFileSync(cli.flags.hostsFile, 'utf-8');
-    const startLocation = currentHosts.indexOf(BEGIN_MARKER);
-    const endLocation = currentHosts.indexOf(END_MARKER);
-
-    if (startLocation > -1 && endLocation > -1) {
-        const newHosts =
-            currentHosts.substr(0, startLocation) +
-            currentHosts.substr(endLocation + END_MARKER.length);
-
-        tryWrite(newHosts);
-    }
-}
-
 const command = cli.input[0];
+const config = JSON.parse(fs.readFileSync(path.join(__dirname, 'blocko.json'), 'utf-8'));
 
 if (!command || command === 'block') {
-    addBlock();
+    updateBlock(config.hosts);
 }
 
 if (command === 'unblock') {
-    removeBlock();
+    if (cli.input[1]) {
+        updateBlock(_.omit(config.hosts, cli.input[1]));
+    } else {
+        updateBlock({});
+    }
 }

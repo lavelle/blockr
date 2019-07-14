@@ -10,7 +10,7 @@ yarn global add blockr
 
 ## Usage
 
-Start by creating the file `~/.blockr.json`. You can use the file in this repo as a starting point. It should contain a single `hosts` key containing the URLs of sites you would like to block.
+Start by creating the file `~/blockr.json`. You can use the file in this repo as a starting point. It should contain a single `hosts` key containing the URLs of sites you would like to block.
 
 ### Activate
 

@@ -6,11 +6,11 @@
 
 I built this as a replacement for [SelfControl](https://github.com/SelfControlApp/). It has the following features:
 
--   Cross platform (MacOS and Linux)
--   Configurable with a human-readable and editable JSON file instead of plists
--   Easily unblock a single site (sometimes a site like Reddit, Twitter or Medium **does** have a useful article you want to read at work, but you don't want to unblock everything)
--   Command line interface instead of GUI
--   Runs indefinitely until you turn it off, rather than having to re-run it every 24 hours
+-   Cross platform (MacOS and Linux).
+-   Configurable with a human-readable and editable JSON file instead of plists.
+-   Easily unblock a single site (sometimes a site like Reddit, Twitter or Medium **does** have a useful article you want to read at work, but you don't want to unblock everything).
+-   Command line interface instead of GUI.
+-   Runs indefinitely until you turn it off, rather than having to re-run it every 24 hours.
 -   Offers an easier way to authenticate as root, which is needed for editing the hosts file.
 
 ## Install
@@ -45,8 +45,6 @@ You can easily sync your config file in two ways: via a symlink, or a flag. Firs
 Via a symlink: run `ln -s $HOME/code/dotfiles/blockr.json $HOME/blockr.json`
 
 Via a flag: use `blockr --config-file $HOME/code/dotfiles/blockr.json`. You could also put this in an alias so you don't have to type it every time.
-
-Create your
 
 ## Planned features
 

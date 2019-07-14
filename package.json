@@ -1,12 +1,14 @@
 {
     "name": "blockr",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "main": "index.js",
     "license": "MIT",
     "bin": "index.js",
     "scripts": {
         "lint": "eslint index.ts",
-        "build": "tsc --esModuleInterop index.ts"
+        "build": "tsc --esModuleInterop index.ts",
+        "release": "yarn lint && yarn build && npm publish",
+        "clean": "rm -rf index.js"
     },
     "dependencies": {
         "chalk": "^2.4.2",

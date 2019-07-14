@@ -50,9 +50,11 @@ Create your
 
 ## Planned features
 
--   Temporarily unblocking a site for 10 minutes or something
--   Configure schedules when the block should be applied
--   Show stats on how many times you've unblocked each site
+-   Temporarily unblocking a site for 10 minutes or something.
+-   Configure schedules when the block should be applied.
+-   Show stats on how many times you've unblocked each site.
+-   Run a background process to put back the block if the user tries to delete it by editing `/etc/hosts` directly, like SelfControl does.
+-   Strict mode that prevents you from running `blockr unblock` for a certain period of time.
 
 ## License
 

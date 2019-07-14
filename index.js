@@ -4,6 +4,8 @@ const os = require('os');
 const path = require('path');
 const _ = require('lodash');
 const meow = require('meow');
+const execa = require('execa');
+const chalk = require('chalk');
 
 const cli = meow(
     `
@@ -15,6 +17,7 @@ const cli = meow(
 	Options
       --hosts-file,  -h   Path to the hosts file
       --config-file, -c   Path to the config file
+      --password, -p      Sudo password
 `,
     {
         flags: {
@@ -27,6 +30,11 @@ const cli = meow(
                 type: 'string',
                 alias: 'c',
                 default: path.join(os.homedir(), 'blockr.json'),
+            },
+            password: {
+                type: 'string',
+                alias: 'p',
+                default: null,
             },
         },
     },
@@ -51,13 +59,20 @@ function generateBlockString(hosts) {
 }
 
 function tryWrite(hosts) {
-    try {
-        fs.writeFileSync(cli.flags.hostsFile, hosts);
-    } catch (error) {
-        if (error.code === 'EACCES') {
-            console.log('Please re-run with sudo to write to the hosts file');
+    if (cli.flags.password) {
+        fs.writeFileSync('/tmp/hosts', hosts);
+        execa.sync(`./runner.sh`, [cli.flags.password, cli.flags.hostsFile]);
+    } else {
+        try {
+            fs.writeFileSync(cli.flags.hostsFile, hosts);
+        } catch (error) {
+            if (error.code === 'EACCES') {
+                console.log(
+                    'Please re-run with sudo or use the `--password` option to write to the hosts file',
+                );
+            }
+            process.exit(1);
         }
-        process.exit(1);
     }
 }
 
@@ -101,12 +116,20 @@ const config = loadConfig();
 
 if (!command || command === 'block') {
     updateBlock(config.hosts);
+    console.log('✅  All sites blocked');
 }
 
 if (command === 'unblock') {
-    if (cli.input[1]) {
-        updateBlock(_.omit(config.hosts, cli.input[1]));
+    const site = cli.input[1];
+    if (site) {
+        if (config.hosts[site]) {
+            updateBlock(_.omit(config.hosts, site));
+            console.log(`✅  '${chalk.yellow(site)}' unblocked`);
+        } else {
+            console.error(`❌  No site called '${chalk.yellow(site)}'`);
+        }
     } else {
         updateBlock({});
+        console.log('✅  All sites unblocked');
     }
 }

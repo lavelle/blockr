@@ -8,6 +8,8 @@
         "lint": "eslint ."
     },
     "dependencies": {
+        "chalk": "^2.4.2",
+        "execa": "^2.0.3",
         "lodash": "^4.17.14",
         "meow": "^5.0.0"
     },

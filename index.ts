@@ -1,11 +1,11 @@
 #! /usr/bin/env node
-const fs = require('fs');
-const os = require('os');
-const path = require('path');
-const _ = require('lodash');
-const meow = require('meow');
-const execa = require('execa');
-const chalk = require('chalk');
+import * as fs from 'fs';
+import * as os from 'os';
+import * as path from 'path';
+import _ from 'lodash';
+import meow from 'meow';
+import execa from 'execa';
+import chalk from 'chalk';
 
 const cli = meow(
     `
@@ -43,12 +43,12 @@ const cli = meow(
 const BEGIN_MARKER = '# BEGIN BLOCKR';
 const END_MARKER = '# END BLOCKR';
 
-const makeEntry = host => `0.0.0.0 ${host}\n::      ${host}\n`;
+const makeEntry = (host: string) => `0.0.0.0 ${host}\n::      ${host}\n`;
 
-function generateBlockString(hosts) {
+function generateBlockString(hosts: { forEach: (arg0: (host: any) => void) => void }) {
     let str = `${BEGIN_MARKER}\n`;
 
-    hosts.forEach(host => {
+    hosts.forEach((host: any) => {
         str += makeEntry(host);
         str += makeEntry(`www.${host}`);
     });
@@ -58,7 +58,7 @@ function generateBlockString(hosts) {
     return str;
 }
 
-function tryWrite(hosts) {
+function tryWrite(hosts: any) {
     if (cli.flags.password) {
         fs.writeFileSync('/tmp/hosts', hosts);
         execa.sync(`./runner.sh`, [cli.flags.password, cli.flags.hostsFile]);
@@ -76,7 +76,7 @@ function tryWrite(hosts) {
     }
 }
 
-function updateBlock(hosts) {
+function updateBlock(hosts: {}) {
     if (!fs.existsSync(cli.flags.hostsFile)) {
         fs.closeSync(fs.openSync(cli.flags.hostsFile, 'w'));
     }
@@ -86,7 +86,7 @@ function updateBlock(hosts) {
     const startLocation = currentHosts.indexOf(BEGIN_MARKER);
     const endLocation = currentHosts.indexOf(END_MARKER);
 
-    let newHosts;
+    let newHosts: string;
     if (startLocation > -1 && endLocation > -1) {
         newHosts =
             currentHosts.substr(0, startLocation) +

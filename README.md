@@ -53,6 +53,7 @@ Via a flag: use `blockr --config-file $HOME/code/dotfiles/blockr.json`. You coul
 -   Show stats on how many times you've unblocked each site.
 -   Run a background process to put back the block if the user tries to delete it by editing `/etc/hosts` directly, like SelfControl does.
 -   Strict mode that prevents you from running `blockr unblock` for a certain period of time.
+-   Groups of sites to block eg "social" or "news"
 
 ## License
 

@@ -43,28 +43,30 @@ const cli = meow(
 const BEGIN_MARKER = '# BEGIN BLOCKR';
 const END_MARKER = '# END BLOCKR';
 
-const makeEntry = (host: string) => `0.0.0.0 ${host}\n::      ${host}\n`;
+const makeEntry = (host: string): string => `0.0.0.0 ${host}\n::      ${host}\n`;
 
-function generateBlockString(hosts: { forEach: (arg0: (host: any) => void) => void }) {
+function generateBlockString(hosts: string[]): string {
     let str = `${BEGIN_MARKER}\n`;
 
-    hosts.forEach((host: any) => {
-        str += makeEntry(host);
-        str += makeEntry(`www.${host}`);
-    });
+    hosts.forEach(
+        (host: string): void => {
+            str += makeEntry(host);
+            str += makeEntry(`www.${host}`);
+        },
+    );
 
     str += END_MARKER;
 
     return str;
 }
 
-function tryWrite(hosts: any) {
+function tryWrite(hostsString: string): void {
     if (cli.flags.password) {
-        fs.writeFileSync('/tmp/hosts', hosts);
+        fs.writeFileSync('/tmp/hosts', hostsString);
         execa.sync(`./runner.sh`, [cli.flags.password, cli.flags.hostsFile]);
     } else {
         try {
-            fs.writeFileSync(cli.flags.hostsFile, hosts);
+            fs.writeFileSync(cli.flags.hostsFile, hostsString);
         } catch (error) {
             if (error.code === 'EACCES') {
                 console.log(
@@ -76,12 +78,12 @@ function tryWrite(hosts: any) {
     }
 }
 
-function updateBlock(hosts: {}) {
+function updateBlock(hostsMap: Record<string, string>): void {
     if (!fs.existsSync(cli.flags.hostsFile)) {
         fs.closeSync(fs.openSync(cli.flags.hostsFile, 'w'));
     }
     const currentHosts = fs.readFileSync(cli.flags.hostsFile, 'utf-8');
-    const blockString = generateBlockString(_.values(hosts));
+    const blockString = generateBlockString(_.values(hostsMap));
 
     const startLocation = currentHosts.indexOf(BEGIN_MARKER);
     const endLocation = currentHosts.indexOf(END_MARKER);
@@ -99,7 +101,7 @@ function updateBlock(hosts: {}) {
     tryWrite(newHosts);
 }
 
-function loadConfig() {
+function loadConfig(): { hosts: Record<string, string> } {
     try {
         return JSON.parse(fs.readFileSync(cli.flags.configFile, 'utf-8'));
     } catch (error) {

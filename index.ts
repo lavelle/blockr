@@ -119,9 +119,7 @@ const config = loadConfig();
 if (!command || command === 'block') {
     updateBlock(config.hosts);
     console.log('✅  All sites blocked');
-}
-
-if (command === 'unblock') {
+} else if (command === 'unblock') {
     const site = cli.input[1];
     if (site) {
         if (config.hosts[site]) {
@@ -134,4 +132,6 @@ if (command === 'unblock') {
         updateBlock({});
         console.log('✅  All sites unblocked');
     }
+} else {
+    cli.showHelp();
 }

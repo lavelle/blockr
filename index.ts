@@ -6,6 +6,7 @@ import _ from 'lodash';
 import meow from 'meow';
 import execa from 'execa';
 import chalk from 'chalk';
+import JSON5 from 'json5';
 
 const cli = meow(
     `
@@ -103,7 +104,7 @@ function updateBlock(hostsMap: Record<string, string>): void {
 
 function loadConfig(): { hosts: Record<string, string> } {
     try {
-        return JSON.parse(fs.readFileSync(cli.flags.configFile, 'utf-8'));
+        return JSON5.parse(fs.readFileSync(cli.flags.configFile, 'utf-8'));
     } catch (error) {
         console.error(`No config file found at ${cli.flags.configFile}`);
         process.exit(1);

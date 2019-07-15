@@ -64,7 +64,7 @@ function generateBlockString(hosts: string[]): string {
 function tryWrite(hostsString: string): void {
     if (cli.flags.password) {
         fs.writeFileSync('/tmp/hosts', hostsString);
-        execa.sync(`./runner.sh`, [cli.flags.password, cli.flags.hostsFile]);
+        execa.sync(path.join(__dirname, 'runner.sh'), [cli.flags.password, cli.flags.hostsFile]);
     } else {
         try {
             fs.writeFileSync(cli.flags.hostsFile, hostsString);
@@ -103,10 +103,19 @@ function updateBlock(hostsMap: Record<string, string>): void {
 }
 
 function loadConfig(): { hosts: Record<string, string> } {
+    let contents: string;
+
     try {
-        return JSON5.parse(fs.readFileSync(cli.flags.configFile, 'utf-8'));
+        contents = fs.readFileSync(cli.flags.configFile, 'utf-8');
     } catch (error) {
         console.error(`No config file found at ${cli.flags.configFile}`);
+        process.exit(1);
+    }
+
+    try {
+        return JSON5.parse(contents);
+    } catch (error) {
+        console.error(`Invalid JSON5 file found at ${cli.flags.configFile}`);
         process.exit(1);
     }
 

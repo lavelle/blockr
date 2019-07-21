@@ -49,6 +49,7 @@ Via a flag: use `blockr --config-file $HOME/code/dotfiles/blockr.json`. You coul
 ## Planned features
 
 -   Temporarily unblocking a site for 10 minutes or something.
+-   Require a one minute delay and a re-confirmation before unblocking.
 -   Configure schedules when the block should be applied.
 -   Show stats on how many times you've unblocked each site.
 -   Run a background process to put back the block if the user tries to delete it by editing `/etc/hosts` directly, like SelfControl does.

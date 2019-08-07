@@ -139,8 +139,9 @@ if (!command || command === 'block') {
             console.error(`❌  No site called '${chalk.yellow(site)}'`);
         }
     } else {
-        updateBlock({});
-        console.log('✅  All sites unblocked');
+        // updateBlock({});
+        // console.log('✅  All sites unblocked');
+        console.log('Not unblocking all sites');
     }
 } else {
     cli.showHelp();
